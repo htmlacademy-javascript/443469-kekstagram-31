@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Tanya](https://up.htmlacademy.ru/javascript/31/user/443469).
-* Наставник: `Неизвестно`.
+* Наставник: [Антон Попов](https://htmlacademy.ru/profile/joker).
 
 ---
 
