@@ -30,18 +30,3 @@ checkIsPalindrome('топот'); // true
 checkIsPalindrome('ДовОд'); // true
 checkIsPalindrome('Кекс'); // false
 checkIsPalindrome('Лёша на полке клопа нашёл '); // false
-
-/** function to check numbers in a string
- * @param {string} string - it's a string to check
- * @return {number} number - returning a number from a string
- */
-
-function checkAllNumbersInString(string) {
-
-}
-
-checkAllNumbersInString('2023 год'); // 2023
-checkAllNumbersInString('ECMAScript 2022'); // 2022
-checkAllNumbersInString('1 кефир, 0.5 батона'); // 105
-checkAllNumbersInString('агент 007'); // 7
-checkAllNumbersInString('а я томат'); // NaN
