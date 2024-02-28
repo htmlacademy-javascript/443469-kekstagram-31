@@ -35,24 +35,44 @@ const getRandomInteger = (a, b) => {
   return Math.floor(result);
 };
 
+const generateUniqueNumbersFromRange = (a, b) => {
+  const previousValues = [];
+  return function () {
+    let currentValue = getRandomInteger(a, b);
+    if (previousValues.length >= (b - a + 1)) {
+      console.error('Перебраны все числа из диапазона от ' + a + ' до ' + b);
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(a, b);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+};
+
+const getUniqueNumbersForComments = generateUniqueNumbersFromRange(1, 100);
+const getUniqueNumbersForPhoto = generateUniqueNumbersFromRange(0, 25);
+const getUniqueNumbersForUrlPhoto = generateUniqueNumbersFromRange(0, 25);
+// console.log(getUniqueNumbersFromRange());
+
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
 const getComments = () => {
   return {
-    id: getRandomInteger(0, 100), //need to fix it to be ANY number
+    id: getUniqueNumbersForComments(), //TODO to fix it to be ANY number, now 1 - 100
     avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-    message: getRandomArrayElement(MESSAGES), //need to be 1 or 2!!
+    message: getRandomArrayElement(MESSAGES), //TODO need to be 1 or 2!!
     name: getRandomArrayElement(NAMES),
   };
 };
 
 const createPublishedPhoto = () => {
   return {
-    id: getRandomInteger(0, 25),
-    url: `photos/${getRandomInteger(0, 25)}.jpg`,
+    id: getUniqueNumbersForPhoto(), // 0 - 25
+    url: `photos/${getUniqueNumbersForUrlPhoto()}.jpg`, // 0 - 25
     description: getRandomArrayElement(DESCRIPTION),
     likes: getRandomInteger(15, 2000),
-    // comments: `${getComments()}`,
     comments: getComments(),
   };
 };
@@ -60,6 +80,6 @@ const createPublishedPhoto = () => {
 
 const getPublishedPhotos = Array.from({length: NUMBER_OBJECTS}, createPublishedPhoto);
 
-console.log(createPublishedPhoto());
-console.log(getComments());
+// console.log(createPublishedPhoto());
+// console.log(getComments());
 console.table(getPublishedPhotos);
