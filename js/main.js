@@ -25,6 +25,31 @@ const NAMES = [
   'Василий',
 ];
 
+const photoId = {
+  MIN: 1,
+  MAX: 25
+};
+
+const urlId = {
+  MIN: 1,
+  MAX: 25
+};
+
+const likesCount = {
+  MIN: 15,
+  MAX: 200
+};
+
+const commentsCount = {
+  MIN: 0,
+  MAX: 30
+};
+
+const avatarId = {
+  MIN: 1,
+  MAX: 6
+};
+
 const NUMBER_OBJECTS = 25;
 
 
@@ -51,31 +76,27 @@ const generateUniqueNumbersFromRange = (a, b) => {
   };
 };
 
-const getUniqueNumbersForComments = generateUniqueNumbersFromRange(1, 100);
-const getUniqueNumbersForPhoto = generateUniqueNumbersFromRange(0, 25);
-const getUniqueNumbersForUrlPhoto = generateUniqueNumbersFromRange(0, 25);
+// const getUniqueNumbersForComments = generateUniqueNumbersFromRange(1, 100);
+const getUniqueNumbersForPhoto = generateUniqueNumbersFromRange(photoId.MIN, photoId.MAX);
+const getUniqueNumbersForUrlPhoto = generateUniqueNumbersFromRange(urlId.MIN, urlId.MAX);
 // console.log(getUniqueNumbersFromRange());
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-const getComments = () => {
-  return {
-    id: getUniqueNumbersForComments(), //TODO to fix it to be ANY number, now 1 - 100
-    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-    message: getRandomArrayElement(MESSAGES), //TODO need to be 1 or 2!!
-    name: getRandomArrayElement(NAMES),
-  };
-};
+const createComment = () => ({
+  // id: getUniqueNumbersForComments(), //TODO to fix it to be ANY number, not 1 - 100
+  avatar: `img/avatar-${getRandomInteger(avatarId.MIN, avatarId.MAX)}.svg`,
+  message: getRandomArrayElement(MESSAGES), //TODO need to be 1 or 2!!
+  name: getRandomArrayElement(NAMES),
+});
 
-const createPublishedPhoto = () => {
-  return {
-    id: getUniqueNumbersForPhoto(), // 0 - 25
-    url: `photos/${getUniqueNumbersForUrlPhoto()}.jpg`, // 0 - 25
-    description: getRandomArrayElement(DESCRIPTION),
-    likes: getRandomInteger(15, 2000),
-    comments: getComments(),
-  };
-};
+const createPublishedPhoto = () => ({
+  id: getUniqueNumbersForPhoto(), // 0 - 25
+  url: `photos/${getUniqueNumbersForUrlPhoto()}.jpg`,
+  description: getRandomArrayElement(DESCRIPTION),
+  likes: getRandomInteger(likesCount.MIN, likesCount.MAX),
+  comments: Array.from({length: getRandomInteger(commentsCount.MIN, commentsCount.MAX)}, createComment)
+});
 
 
 const getPublishedPhotos = Array.from({length: NUMBER_OBJECTS}, createPublishedPhoto);
