@@ -25,33 +25,27 @@ const NAMES = [
   'Василий',
 ];
 
-const photoId = {
+const NUMBER_OBJECTS = 25;
+
+const GeneralId = {
   MIN: 1,
   MAX: 25
 };
 
-const urlId = {
-  MIN: 1,
-  MAX: 25
-};
-
-const likesCount = {
+const LikesCount = {
   MIN: 15,
   MAX: 200
 };
 
-const commentsCount = {
+const CommentsCount = {
   MIN: 0,
   MAX: 30
 };
 
-const avatarId = {
+const AvatarId = {
   MIN: 1,
   MAX: 6
 };
-
-const NUMBER_OBJECTS = 25;
-
 
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -62,10 +56,10 @@ const getRandomInteger = (a, b) => {
 
 const generateUniqueNumbersFromRange = (a, b) => {
   const previousValues = [];
-  return function () {
+  return () => {
     let currentValue = getRandomInteger(a, b);
     if (previousValues.length >= (b - a + 1)) {
-      console.error('Перебраны все числа из диапазона от ' + a + ' до ' + b);
+      // console.error(`Перебраны все числа из диапазона от ${a} до ${b}`);
       return null;
     }
     while (previousValues.includes(currentValue)) {
@@ -76,31 +70,32 @@ const generateUniqueNumbersFromRange = (a, b) => {
   };
 };
 
-// const getUniqueNumbersForComments = generateUniqueNumbersFromRange(1, 100);
-const getUniqueNumbersForPhoto = generateUniqueNumbersFromRange(photoId.MIN, photoId.MAX);
-const getUniqueNumbersForUrlPhoto = generateUniqueNumbersFromRange(urlId.MIN, urlId.MAX);
-// console.log(getUniqueNumbersFromRange());
-
+const getUniqueNumbersForPhoto = generateUniqueNumbersFromRange(GeneralId.MIN, GeneralId.MAX);
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
+let idComment = 1;
+
 const createComment = () => ({
-  // id: getUniqueNumbersForComments(), //TODO to fix it to be ANY number, not 1 - 100
-  avatar: `img/avatar-${getRandomInteger(avatarId.MIN, avatarId.MAX)}.svg`,
-  message: getRandomArrayElement(MESSAGES), //TODO need to be 1 or 2!!
+  id: idComment++,
+  avatar: `img/avatar-${getRandomInteger(AvatarId.MIN, AvatarId.MAX)}.svg`,
+  message: getRandomArrayElement(MESSAGES),
   name: getRandomArrayElement(NAMES),
 });
 
-const createPublishedPhoto = () => ({
-  id: getUniqueNumbersForPhoto(), // 0 - 25
-  url: `photos/${getUniqueNumbersForUrlPhoto()}.jpg`,
-  description: getRandomArrayElement(DESCRIPTION),
-  likes: getRandomInteger(likesCount.MIN, likesCount.MAX),
-  comments: Array.from({length: getRandomInteger(commentsCount.MIN, commentsCount.MAX)}, createComment)
-});
+const createPublishedPhoto = () => {
+  const id = getUniqueNumbersForPhoto();
+  const url = `photos/${id}.jpg`;
 
+  return {
+    id: id,
+    url: url,
+    description: getRandomArrayElement(DESCRIPTION),
+    likes: getRandomInteger(LikesCount.MIN, LikesCount.MAX),
+    comments: Array.from({length: getRandomInteger(CommentsCount.MIN, CommentsCount.MAX)}, createComment)
+  };
+};
 
-const getPublishedPhotos = Array.from({length: NUMBER_OBJECTS}, createPublishedPhoto);
+const generatePublishedPhotos = (numberOfPhotos) => Array.from({length: numberOfPhotos}, createPublishedPhoto);
+const getPublishedPhotos = generatePublishedPhotos(NUMBER_OBJECTS);
 
-// console.log(createPublishedPhoto());
-// console.log(getComments());
 console.table(getPublishedPhotos);
