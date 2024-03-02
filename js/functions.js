@@ -56,3 +56,75 @@ checkIsNumbersInString('а я томат'); // NaN
 checkIsNumbersInString(2023); // 2023
 checkIsNumbersInString(-1); // 1
 checkIsNumbersInString(1.5); // 15
+
+/**
+ * function to check if a meeting fits a working day duration
+ * @param startTime{string} - it's a start time of a working day
+ * @param endTime{string} - it's an end time of a working day
+ * @param startMeeting{string} - it's a start time of a meeting
+ * @param duration{number} - it's a duration of a meeting
+ * @return {boolean} - true, if a meeting fits a working day, false - opposite
+ */
+
+function checkMeetingFitsDay(startTime, endTime, startMeeting, duration) {
+  const TimeValue = {
+    MIN_IN_HOUR: 60,
+    TOTAL_HOUR: 24
+  };
+
+  const totalDurationDay = TimeValue.TOTAL_HOUR * TimeValue.MIN_IN_HOUR;
+
+  const startDaySplitted = startTime.split(':');
+  const endDaySplitted = endTime.split(':');
+  const startMeetingDaySplitted = startMeeting.split(':');
+
+  const durationStartDayMinutes = parseInt(startDaySplitted['0'], 10) * TimeValue.MIN_IN_HOUR + parseInt(startDaySplitted['1'], 10);
+  const durationEndDayMinutes = parseInt(endDaySplitted['0'], 10) * TimeValue.MIN_IN_HOUR + parseInt(endDaySplitted['1'], 10);
+  const meetingDayMinutes = parseInt(startMeetingDaySplitted['0'], 10) * TimeValue.MIN_IN_HOUR + parseInt(startMeetingDaySplitted['1'], 10);
+
+  const workingDayDurationMinutes = durationEndDayMinutes - durationStartDayMinutes;
+
+  const leftWorkingDay = durationEndDayMinutes - meetingDayMinutes;
+
+  const isWithinDayLimit = totalDurationDay < durationStartDayMinutes || totalDurationDay < durationEndDayMinutes || totalDurationDay < duration;
+
+  if (isWithinDayLimit) {
+    console.log('Рабочий день или встреча не укладываются в одни календарные сутки.');
+    return false;
+  }
+
+  if (durationStartDayMinutes > meetingDayMinutes) { //если митинг ДО старта рабочего времени
+    return false;
+  }
+
+  if (leftWorkingDay < duration) { //если общее время работы меньше времени митинга независимо от его старта
+    return false;
+  }
+
+  if (durationEndDayMinutes < meetingDayMinutes - duration) { //если время митинга больше чем время от начала митинга до конца рабочего дня
+    return false;
+  }
+
+  if (workingDayDurationMinutes >= duration) {
+    return true;
+  }
+}
+
+console.log(checkMeetingFitsDay('08:00', '17:30', '14:00', 90)); // true
+console.log(checkMeetingFitsDay('8:0', '10:0', '8:0', 120));// true
+console.log(checkMeetingFitsDay('08:00', '14:30', '14:00', 90));// false
+console.log(checkMeetingFitsDay('14:00', '17:30', '08:0', 90));// false
+console.log(checkMeetingFitsDay('8:00', '17:30', '08:00', 900));// false
+
+
+/*
+'8:00' - начало рабочего дня
+'17:30' - конец рабочего дня
+'14:00' - начало встречи
+90 - продолжительность встречи в минутах
+*/
+// checkMeetingFitsDay('08:00', '17:30', '14:00', 90); // true
+// checkMeetingFitsDay('8:0', '10:0', '8:0', 120);     // true
+// checkMeetingFitsDay('08:00', '14:30', '14:00', 90); // false
+// checkMeetingFitsDay('14:00', '17:30', '08:0', 90);  // false
+// checkMeetingFitsDay('8:00', '17:30', '08:00', 900); // false
