@@ -3,4 +3,4 @@ import {generatePublishedPhotos} from './content.js';
 
 const getPublishedPhotos = generatePublishedPhotos(NUMBER_OBJECTS);
 
-console.table(getPublishedPhotos);
+// console.table(getPublishedPhotos);

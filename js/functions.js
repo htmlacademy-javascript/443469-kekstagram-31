@@ -56,3 +56,54 @@ checkIsNumbersInString('а я томат'); // NaN
 checkIsNumbersInString(2023); // 2023
 checkIsNumbersInString(-1); // 1
 checkIsNumbersInString(1.5); // 15
+
+/**
+ * function to check if a meeting fits a working day duration
+ * @param startTime{string} - it's a start time of a working day
+ * @param endTime{string} - it's an end time of a working day
+ * @param startMeeting{string} - it's a start time of a meeting
+ * @param duration{number} - it's a duration of a meeting
+ * @return {boolean} - true, if a meeting fits a working day, false - opposite
+ */
+
+function checkMeetingFitsDay(startTime, endTime, startMeeting, duration) {
+  const TimeValue = {
+    MIN_IN_HOUR: 60,
+    TOTAL_HOUR: 24
+  };
+
+  const totalDurationDay = TimeValue.TOTAL_HOUR * TimeValue.MIN_IN_HOUR;
+
+  const valueInMinutes = (value) => {
+    const splittedVal = value.split(':');
+    return parseInt(splittedVal[0], 10) * TimeValue.MIN_IN_HOUR + parseInt(splittedVal[1], 10);
+  };
+
+  const durationStartDayMinutes = valueInMinutes(startTime);
+  const durationEndDayMinutes = valueInMinutes(endTime);
+  const meetingDayMinutes = valueInMinutes(startMeeting);
+
+  const workingDayDurationMinutes = durationEndDayMinutes - durationStartDayMinutes;
+  const leftWorkingDay = durationEndDayMinutes - meetingDayMinutes;
+  const isWithinDayLimit = totalDurationDay < durationStartDayMinutes || totalDurationDay < durationEndDayMinutes || totalDurationDay < duration;
+
+  if (isWithinDayLimit) {
+    console.log('Рабочий день или встреча не укладываются в одни календарные сутки.');
+    return false;
+  }
+
+  //если митинг ДО старта рабочего времени
+  //если общее время работы < длительности митинга, независимо от его старта
+  //если время митинга >, чем время от начала митинга до конца рабочего дня
+  if (durationStartDayMinutes > meetingDayMinutes || leftWorkingDay < duration || (durationEndDayMinutes < meetingDayMinutes - duration)) {
+    return false;
+  }
+
+  return workingDayDurationMinutes >= duration;
+}
+
+// console.log(checkMeetingFitsDay('08:00', '17:30', '14:00', 90)); // true
+// console.log(checkMeetingFitsDay('8:0', '10:0', '8:0', 120));// true
+// console.log(checkMeetingFitsDay('08:00', '14:30', '14:00', 90));// false
+// console.log(checkMeetingFitsDay('14:00', '17:30', '08:0', 90));// false
+// console.log(checkMeetingFitsDay('8:00', '17:30', '08:00', 900));// false
