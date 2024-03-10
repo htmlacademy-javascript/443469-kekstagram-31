@@ -1,5 +1,14 @@
 import {generateUniqueNumbersFromRange, getRandomInteger} from './util.js';
-import {AvatarId, CommentsCount, DESCRIPTION, GeneralId, LikesCount, MESSAGES, NAMES} from './consts.js';
+import {
+  AvatarId,
+  CommentsCount,
+  DESCRIPTION,
+  GeneralId,
+  LikesCount,
+  MESSAGES,
+  NAMES,
+  NUMBER_OBJECTS
+} from './consts.js';
 
 const getUniqueNumbersForPhoto = generateUniqueNumbersFromRange(GeneralId.MIN, GeneralId.MAX);
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
@@ -28,4 +37,6 @@ const createPublishedPhoto = () => {
 
 const generatePublishedPhotos = (numberOfPhotos) => Array.from({length: numberOfPhotos}, createPublishedPhoto);
 
-export {generatePublishedPhotos};
+const getPublishedPhotos = generatePublishedPhotos(NUMBER_OBJECTS);
+
+export {getPublishedPhotos};
