@@ -1,5 +1,5 @@
-import {NUMBER_OBJECTS} from './data.js';
-import {generatePublishedPhotos} from './content.js';
+import {NUMBER_OBJECTS} from './mocks/consts.js';
+import {generatePublishedPhotos} from './mocks/content.js';
 
 const getPublishedPhotos = generatePublishedPhotos(NUMBER_OBJECTS);
 
