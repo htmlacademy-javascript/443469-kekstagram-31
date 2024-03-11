@@ -1,5 +1,3 @@
-import {getPublishedPhotos} from './mocks/content.js';
-
 const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const photoFragment = document.createDocumentFragment();
 const photoResultContainer = document.querySelector('.pictures');
@@ -16,9 +14,13 @@ const createPhotoThumb = ({url, description, likes, comments}) => {
   return imageThumbnail;
 };
 
-getPublishedPhotos.forEach((photo) => {
-  const imageThumbnail = createPhotoThumb(photo);
-  photoFragment.appendChild(imageThumbnail);
-});
+const createThumbnails = (thumbnail) => {
+  thumbnail.forEach((photo) => {
+    const imageThumbnail = createPhotoThumb(photo);
+    photoFragment.appendChild(imageThumbnail);
+  });
 
-photoResultContainer.appendChild(photoFragment);
+  photoResultContainer.appendChild(photoFragment);
+};
+
+export {createThumbnails};

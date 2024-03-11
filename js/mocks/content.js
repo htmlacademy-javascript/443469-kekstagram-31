@@ -7,7 +7,6 @@ import {
   LikesCount,
   MESSAGES,
   NAMES,
-  NUMBER_OBJECTS
 } from './consts.js';
 
 const getUniqueNumbersForPhoto = generateUniqueNumbersFromRange(GeneralId.MIN, GeneralId.MAX);
@@ -37,6 +36,4 @@ const createPublishedPhoto = () => {
 
 const generatePublishedPhotos = (numberOfPhotos) => Array.from({length: numberOfPhotos}, createPublishedPhoto);
 
-const getPublishedPhotos = generatePublishedPhotos(NUMBER_OBJECTS);
-
-export {getPublishedPhotos};
+export {generatePublishedPhotos};
