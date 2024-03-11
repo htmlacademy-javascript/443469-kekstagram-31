@@ -1,5 +1,13 @@
-import {generateUniqueNumbersFromRange, getRandomInteger} from './util';
-import {AvatarId, CommentsCount, DESCRIPTION, GeneralId, LikesCount, MESSAGES, NAMES} from './data';
+import {generateUniqueNumbersFromRange, getRandomInteger} from './util.js';
+import {
+  AvatarId,
+  CommentsCount,
+  DESCRIPTION,
+  GeneralId,
+  LikesCount,
+  MESSAGES,
+  NAMES,
+} from './consts.js';
 
 const getUniqueNumbersForPhoto = generateUniqueNumbersFromRange(GeneralId.MIN, GeneralId.MAX);
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];

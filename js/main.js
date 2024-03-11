@@ -1,6 +1,7 @@
-import {NUMBER_OBJECTS} from './data.js';
-import {generatePublishedPhotos} from './content.js';
+import {NUMBER_OBJECTS} from './mocks/consts.js';
+import {generatePublishedPhotos} from './mocks/content.js';
+import {createThumbnails} from './create-photos.js';
 
 const getPublishedPhotos = generatePublishedPhotos(NUMBER_OBJECTS);
 
-// console.table(getPublishedPhotos);
+createThumbnails(getPublishedPhotos);
