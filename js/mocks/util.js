@@ -21,4 +21,6 @@ const generateUniqueNumbersFromRange = (a, b) => {
   };
 };
 
-export {getRandomInteger, generateUniqueNumbersFromRange};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomInteger, generateUniqueNumbersFromRange, isEscapeKey};
