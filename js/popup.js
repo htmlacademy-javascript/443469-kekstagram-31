@@ -1,4 +1,4 @@
-import {isEscapeKey} from './mocks/util.js';
+import {isEscapeKey} from './util.js';
 
 const popupEl = document.querySelector('.big-picture');
 const commentCountEl = document.querySelector('.social__comment-count');
