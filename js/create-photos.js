@@ -1,4 +1,4 @@
-import {openPopup} from './generate-content-popup';
+import {openPopup} from './generate-content-popup.js';
 
 const photoTemplateEl = document.querySelector('#picture').content.querySelector('.picture');
 const photoFragment = document.createDocumentFragment();
