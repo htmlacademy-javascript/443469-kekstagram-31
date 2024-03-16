@@ -1,3 +1,5 @@
+import {openPopup} from './generate-content-popup';
+
 const photoTemplateEl = document.querySelector('#picture').content.querySelector('.picture');
 const photoFragment = document.createDocumentFragment();
 const photoResultContainerEl = document.querySelector('.pictures');
@@ -17,6 +19,10 @@ const createPhotoThumb = ({url, description, likes, comments}) => {
 const createThumbnails = (thumbnails) => {
   thumbnails.forEach((photo) => {
     const imageThumbnail = createPhotoThumb(photo);
+    imageThumbnail.addEventListener('click', (evt)=> {
+      evt.preventDefault();
+      openPopup(photo);
+    });
     photoFragment.appendChild(imageThumbnail);
   });
 
