@@ -88,7 +88,7 @@ function checkMeetingFitsDay(startTime, endTime, startMeeting, duration) {
   const isWithinDayLimit = totalDurationDay < durationStartDayMinutes || totalDurationDay < durationEndDayMinutes || totalDurationDay < duration;
 
   if (isWithinDayLimit) {
-    console.log('Рабочий день или встреча не укладываются в одни календарные сутки.');
+    // console.log('Рабочий день или встреча не укладываются в одни календарные сутки.');
     return false;
   }
 
@@ -101,6 +101,8 @@ function checkMeetingFitsDay(startTime, endTime, startMeeting, duration) {
 
   return workingDayDurationMinutes >= duration;
 }
+
+checkMeetingFitsDay('08:00', '17:30', '14:00', 90);
 
 // console.log(checkMeetingFitsDay('08:00', '17:30', '14:00', 90)); // true
 // console.log(checkMeetingFitsDay('8:0', '10:0', '8:0', 120));// true
