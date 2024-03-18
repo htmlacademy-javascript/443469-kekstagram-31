@@ -1,4 +1,4 @@
-import {generateUniqueNumbersFromRange, getRandomInteger} from './util.js';
+import {generateUniqueNumbersFromRange, getRandomInteger} from '../util.js';
 import {
   AvatarId,
   CommentsCount,

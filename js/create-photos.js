@@ -1,26 +1,32 @@
-const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
+import {openPopup} from './generate-content-popup.js';
+
+const photoTemplateEl = document.querySelector('#picture').content.querySelector('.picture');
 const photoFragment = document.createDocumentFragment();
-const photoResultContainer = document.querySelector('.pictures');
+const photoResultContainerEl = document.querySelector('.pictures');
 
 const createPhotoThumb = ({url, description, likes, comments}) => {
-  const imageThumbnail = photoTemplate.cloneNode(true);
-  const image = imageThumbnail.querySelector('.picture__img');
+  const imageThumbnail = photoTemplateEl.cloneNode(true);
+  const imageEl = imageThumbnail.querySelector('.picture__img');
 
-  image.src = url;
-  image.alt = description;
+  imageEl.src = url;
+  imageEl.alt = description;
   imageThumbnail.querySelector('.picture__likes').textContent = likes;
   imageThumbnail.querySelector('.picture__comments').textContent = comments.length;
 
   return imageThumbnail;
 };
 
-const createThumbnails = (thumbnail) => {
-  thumbnail.forEach((photo) => {
+const createThumbnails = (thumbnails) => {
+  thumbnails.forEach((photo) => {
     const imageThumbnail = createPhotoThumb(photo);
+    imageThumbnail.addEventListener('click', (evt)=> {
+      evt.preventDefault();
+      openPopup(photo);
+    });
     photoFragment.appendChild(imageThumbnail);
   });
 
-  photoResultContainer.appendChild(photoFragment);
+  photoResultContainerEl.appendChild(photoFragment);
 };
 
 export {createThumbnails};
