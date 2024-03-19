@@ -23,7 +23,7 @@ const fillComments = (photoComments) => {
 };
 
 const fillPopup = ({url, description, likes, comments}) => {
-  const imgEl = bigImageEl.querySelector('.big-picture__img').querySelector('img');
+  const imgEl = bigImageEl.querySelector('.big-picture__img img');
   imgEl.src = url;
   imgEl.alt = description;
   bigImageEl.querySelector('.social__caption').textContent = description;
@@ -35,13 +35,13 @@ const fillPopup = ({url, description, likes, comments}) => {
 
 closeBtnEl.addEventListener('click', (evt) => {
   evt.preventDefault();
-  closeUserModal();
+  closePopup();
 });
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeUserModal();
+    closePopup();
   }
 };
 
@@ -55,7 +55,8 @@ const openPopup = (photo) => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
-function closeUserModal() {
+//function declaration to call it anywhere
+function closePopup() {
   popupEl.classList.add('hidden');
   commentCountEl.classList.remove('hidden');
   commentLoaderEl.classList.remove('hidden');
