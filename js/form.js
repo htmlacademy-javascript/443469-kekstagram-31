@@ -5,7 +5,6 @@ const uploadEl = document.querySelector('.img-upload__input');
 const overlayEl = document.querySelector('.img-upload__overlay');
 const closeBtnEl = document.querySelector('.img-upload__cancel');
 const formEl = document.querySelector('.img-upload__form');
-const btnSendEl = document.querySelector('.img-upload__submit');
 const commentEl = document.querySelector('.text__description');
 const hashtagEl = document.querySelector('.text__hashtags');
 
@@ -37,43 +36,22 @@ const openUploadPopup = () => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
-const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
+const validateHashtag = (hashtag) => /^#[a-zа-яё0-9]{1,19}$/i.test(hashtag);
 
-const validateHashtag = (value) => hashtag.test(value);
-const validateComment = (value) => value.length <= 140;
+const areUniqueHashtags = (hashtags) => {
+  const lowerCaseHashtags = hashtags.map((hashtag) => hashtag.toLowerCase());
+  return lowerCaseHashtags.filter((value, index) => lowerCaseHashtags.indexOf(value) === index).length === lowerCaseHashtags.length;
+};
 
-pristine.addValidator(
-  commentEl,
-  validateComment,
-  'Длина комментария должна быть меньше 140 символов'
-);
-
-pristine.addValidator(
-  hashtagEl,
-  validateHashtag,
-  'Введён невалидный хэштег, введите хэштег в формате #хештег'
-);
-
-btnSendEl.addEventListener('click', onImageSubmit);
-
-// formEl.addEventListener('submit', (evt) => {
-//   evt.preventDefault();
-//   pristine.validate();
-// });
-
-closeBtnEl.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  closeUploadPopup();
-});
-
-commentEl.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
+const validateHashtags = (hashtagsScope) => {
+  if (!hashtagsScope.trim()) {
+    return true;
   }
-});
+  const hashtags = hashtagsScope.split(' ');
+  return hashtags.every((item) => validateHashtag(item)) && hashtags.length <= 5 && areUniqueHashtags(hashtags);
+};
 
-uploadEl.addEventListener('change', openUploadPopup);
-
+const validateComment = (comment) => comment.length <= 140;
 
 //function declaration to call it anywhere
 function closeUploadPopup() {
@@ -83,3 +61,32 @@ function closeUploadPopup() {
 
   document.removeEventListener('keydown', onDocumentKeydown);
 }
+
+const checkForm = () => {
+  formEl.addEventListener('submit', onImageSubmit);
+
+  closeBtnEl.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    closeUploadPopup();
+  });
+
+  commentEl.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.stopPropagation();
+    }
+  });
+
+  hashtagEl.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.stopPropagation();
+    }
+  });
+
+  uploadEl.addEventListener('change', openUploadPopup);
+
+  pristine.addValidator(commentEl, validateComment, 'Длина комментария должна быть меньше 140 символов');
+
+  pristine.addValidator(hashtagEl, validateHashtags, 'Введён невалидный хэштег');
+};
+
+export {checkForm};
