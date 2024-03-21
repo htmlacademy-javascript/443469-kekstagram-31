@@ -1,4 +1,5 @@
 import {isEscapeKey} from './util.js';
+import {initScale} from './scale.js';
 
 const MAX_LENGTH_MESSAGE = 140;
 const MAX_HASHTAGS_QUANTITY = 5;
@@ -35,6 +36,7 @@ const onDocumentKeydown = (evt) => {
 const openUploadPopup = () => {
   overlayEl.classList.remove('hidden');
   bodyEl.classList.add('modal-open');
+  initScale();
 
   document.addEventListener('keydown', onDocumentKeydown);
 };
@@ -87,9 +89,7 @@ const onCheckFormValidation = () => {
   });
 
   uploadEl.addEventListener('change', openUploadPopup);
-
   pristine.addValidator(commentEl, validateComment, 'Длина комментария должна быть меньше 140 символов');
-
   pristine.addValidator(hashtagEl, validateHashtags, 'Введён невалидный хэштег');
 };
 
