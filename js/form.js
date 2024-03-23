@@ -1,5 +1,6 @@
 import {isEscapeKey} from './util.js';
 import {initScale} from './scale.js';
+import {initEffects} from './effects.js';
 
 const MAX_LENGTH_MESSAGE = 140;
 const MAX_HASHTAGS_QUANTITY = 5;
@@ -37,6 +38,7 @@ const openUploadPopup = () => {
   overlayEl.classList.remove('hidden');
   bodyEl.classList.add('modal-open');
   initScale();
+  initEffects();
 
   document.addEventListener('keydown', onDocumentKeydown);
 };
