@@ -70,7 +70,7 @@ function closeUploadPopup() {
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
-const onCheckFormValidation = () => {
+const addFormEventsValidation = () => {
   formEl.addEventListener('submit', onFormSubmit);
 
   closeBtnEl.addEventListener('click', (evt) => {
@@ -95,4 +95,4 @@ const onCheckFormValidation = () => {
   pristine.addValidator(hashtagEl, validateHashtags, 'Введён невалидный хэштег');
 };
 
-export {onCheckFormValidation};
+export {addFormEventsValidation};
