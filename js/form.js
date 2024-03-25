@@ -1,4 +1,9 @@
 import {isEscapeKey} from './util.js';
+import {initScale} from './scale.js';
+import {initEffects} from './effects.js';
+
+const MAX_LENGTH_MESSAGE = 140;
+const MAX_HASHTAGS_QUANTITY = 5;
 
 const bodyEl = document.querySelector('body');
 const uploadEl = document.querySelector('.img-upload__input');
@@ -14,7 +19,7 @@ const pristine = new Pristine(formEl, {
   errorTextClass: 'img-upload__field-wrapper--error',
 }, false);
 
-const onImageSubmit = (evt) => {
+const onFormSubmit = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
     formEl.submit();
@@ -32,6 +37,8 @@ const onDocumentKeydown = (evt) => {
 const openUploadPopup = () => {
   overlayEl.classList.remove('hidden');
   bodyEl.classList.add('modal-open');
+  initScale();
+  initEffects();
 
   document.addEventListener('keydown', onDocumentKeydown);
 };
@@ -40,7 +47,7 @@ const validateHashtag = (hashtag) => /^#[a-zа-яё0-9]{1,19}$/i.test(hashtag);
 
 const areUniqueHashtags = (hashtags) => {
   const lowerCaseHashtags = hashtags.map((hashtag) => hashtag.toLowerCase());
-  return lowerCaseHashtags.filter((value, index) => lowerCaseHashtags.indexOf(value) === index).length === lowerCaseHashtags.length;
+  return lowerCaseHashtags.filter((hashtag, index) => lowerCaseHashtags.indexOf(hashtag) === index).length === lowerCaseHashtags.length;
 };
 
 const validateHashtags = (hashtagsScope) => {
@@ -48,22 +55,23 @@ const validateHashtags = (hashtagsScope) => {
     return true;
   }
   const hashtags = hashtagsScope.split(' ');
-  return hashtags.every((item) => validateHashtag(item)) && hashtags.length <= 5 && areUniqueHashtags(hashtags);
+  return hashtags.every((hashtag) => validateHashtag(hashtag)) && hashtags.length <= MAX_HASHTAGS_QUANTITY && areUniqueHashtags(hashtags);
 };
 
-const validateComment = (comment) => comment.length <= 140;
+const validateComment = (comment) => comment.length <= MAX_LENGTH_MESSAGE;
 
 //function declaration to call it anywhere
 function closeUploadPopup() {
   formEl.reset();
+  pristine.reset();
   overlayEl.classList.add('hidden');
   bodyEl.classList.remove('modal-open');
 
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
-const checkForm = () => {
-  formEl.addEventListener('submit', onImageSubmit);
+const onCheckFormValidation = () => {
+  formEl.addEventListener('submit', onFormSubmit);
 
   closeBtnEl.addEventListener('click', (evt) => {
     evt.preventDefault();
@@ -83,10 +91,8 @@ const checkForm = () => {
   });
 
   uploadEl.addEventListener('change', openUploadPopup);
-
   pristine.addValidator(commentEl, validateComment, 'Длина комментария должна быть меньше 140 символов');
-
   pristine.addValidator(hashtagEl, validateHashtags, 'Введён невалидный хэштег');
 };
 
-export {checkForm};
+export {onCheckFormValidation};
