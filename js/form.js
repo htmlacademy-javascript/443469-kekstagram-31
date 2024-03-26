@@ -22,6 +22,14 @@ const pristine = new Pristine(formEl, {
 const onFormSubmit = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
+    const formData = new FormData(evt.target);
+    fetch(
+      'https://31.javascript.htmlacadem.pro/kekstagram',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
     formEl.submit();
     closeUploadPopup();
   }

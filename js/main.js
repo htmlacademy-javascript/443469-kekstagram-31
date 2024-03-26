@@ -1,11 +1,13 @@
-import {NUMBER_OBJECTS} from './mocks/consts.js';
-import {generatePublishedPhotos} from './mocks/content.js';
 import {createThumbnails} from './create-photos.js';
 import {addFormEventsValidation} from './form.js';
 
-const getPublishedPhotos = generatePublishedPhotos(NUMBER_OBJECTS);
-
-createThumbnails(getPublishedPhotos);
 addFormEventsValidation();
+
+fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
+  .then((response) => response.json())
+  .then((photos) => {
+    createThumbnails(photos);
+  });
+
 
 // console.log(getPublishedPhotos);
