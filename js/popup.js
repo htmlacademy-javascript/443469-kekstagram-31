@@ -1,4 +1,4 @@
-import {isEscapeKey} from './util.js';
+import {onEscKeyDown} from './util.js';
 
 const popupEl = document.querySelector('.big-picture');
 const commentCountEl = document.querySelector('.social__comment-count');
@@ -38,12 +38,7 @@ closeBtnEl.addEventListener('click', (evt) => {
   closePopup();
 });
 
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closePopup();
-  }
-};
+const onPopupEscKeydown = (evt) => onEscKeyDown(evt, closePopup);
 
 const openPopup = (photo) => {
   fillPopup(photo);
@@ -52,7 +47,7 @@ const openPopup = (photo) => {
   commentCountEl.classList.add('hidden');
   commentLoaderEl.classList.add('hidden');
 
-  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('keydown', onPopupEscKeydown);
 };
 
 //function declaration to call it anywhere
@@ -61,7 +56,7 @@ function closePopup() {
   commentCountEl.classList.remove('hidden');
   commentLoaderEl.classList.remove('hidden');
 
-  document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
 export {openPopup};

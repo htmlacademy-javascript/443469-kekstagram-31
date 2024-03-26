@@ -2,6 +2,13 @@ const ALERT_SHOW_TIME = 5000;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
+const onEscKeyDown = (evt, callbackFunc) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    callbackFunc();
+  }
+};
+
 const showErrorMessage = () => {
   const errorTemplate = document.querySelector('#data-error').content;
   const errorEl = errorTemplate.cloneNode(true);
@@ -15,4 +22,4 @@ const showErrorMessage = () => {
   }, ALERT_SHOW_TIME);
 };
 
-export {showErrorMessage, isEscapeKey};
+export {showErrorMessage, isEscapeKey, onEscKeyDown};
