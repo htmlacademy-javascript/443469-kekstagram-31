@@ -7,6 +7,16 @@ import {sendData} from './api.js';
 const MAX_LENGTH_MESSAGE = 140;
 const MAX_HASHTAGS_QUANTITY = 5;
 
+const FormButtonText = {
+  IN_PROCESS: 'Отправка...',
+  PUBLISH: 'Опубликовать',
+};
+
+const ValidationMessages = {
+  COMMENT: 'Длина комментария должна быть меньше 140 символов',
+  HASHTAGS: 'Введён невалидный хэштег',
+};
+
 const bodyEl = document.querySelector('body');
 const uploadEl = document.querySelector('.img-upload__input');
 const overlayEl = document.querySelector('.img-upload__overlay');
@@ -22,14 +32,9 @@ const pristine = new Pristine(formEl, {
   errorTextClass: 'img-upload__field-wrapper--error',
 }, false);
 
-const blockSubmitButton = () => {
-  formSubmitEl.textContent = 'Отправка...';
-  formSubmitEl.disabled = true;
-};
-
-const unblockSubmitButton = () => {
-  formSubmitEl.textContent = 'Опубликовать';
-  formSubmitEl.disabled = false;
+const setSubmitButtonState = (text, disabled) => {
+  formSubmitEl.textContent = text;
+  formSubmitEl.disabled = disabled;
 };
 
 const onFormEscKeyDown = (evt) => onEscKeyDown(evt, closeUploadPopup);
@@ -37,7 +42,7 @@ const onFormEscKeyDown = (evt) => onEscKeyDown(evt, closeUploadPopup);
 const onFormSubmit = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
-    blockSubmitButton();
+    setSubmitButtonState(FormButtonText.IN_PROCESS, true);
     const formData = new FormData(evt.target);
     sendData(formData)
       .then(() => {
@@ -48,7 +53,7 @@ const onFormSubmit = (evt) => {
         document.removeEventListener('keydown', onFormEscKeyDown);
         openErrorPopup(onFormEscKeyDown);
       })
-      .finally(unblockSubmitButton);
+      .finally(() => setSubmitButtonState(FormButtonText.PUBLISH, false));
   }
 };
 
@@ -109,8 +114,8 @@ const addFormEventsValidation = () => {
   });
 
   uploadEl.addEventListener('change', openUploadPopup);
-  pristine.addValidator(commentEl, validateComment, 'Длина комментария должна быть меньше 140 символов');
-  pristine.addValidator(hashtagEl, validateHashtags, 'Введён невалидный хэштег');
+  pristine.addValidator(commentEl, validateComment, ValidationMessages.COMMENT);
+  pristine.addValidator(hashtagEl, validateHashtags, ValidationMessages.HASHTAGS);
 };
 
 export {addFormEventsValidation};
