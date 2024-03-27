@@ -2,7 +2,7 @@ import {isEscapeKey, onEscKeyDown} from './util.js';
 import {openSuccessPopup, openErrorPopup} from './secondary-popup.js';
 import {initScale} from './scale.js';
 import {initEffects} from './effects.js';
-import {sendData} from './api';
+import {sendData} from './api.js';
 
 const MAX_LENGTH_MESSAGE = 140;
 const MAX_HASHTAGS_QUANTITY = 5;
