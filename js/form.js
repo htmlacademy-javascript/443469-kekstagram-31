@@ -1,4 +1,5 @@
-import {isEscapeKey, onEscKeyDown, showErrorMessage} from './util.js';
+import {isEscapeKey, onEscKeyDown} from './util.js';
+import {openSuccessPopup, openErrorPopup} from './secondary-popup.js';
 import {initScale} from './scale.js';
 import {initEffects} from './effects.js';
 import {sendData} from './api';
@@ -13,34 +14,7 @@ const closeBtnEl = document.querySelector('.img-upload__cancel');
 const formEl = document.querySelector('.img-upload__form');
 const commentEl = document.querySelector('.text__description');
 const hashtagEl = document.querySelector('.text__hashtags');
-
-const errorEl = document.querySelector('#error').content.querySelector('.error');
-const successEl = document.querySelector('#success').content.querySelector('.success');
-const errorTemplate = errorEl.cloneNode(true);
-const successTemplate = successEl.cloneNode(true);
 const formSubmitEl = document.querySelector('#upload-submit');
-const errorButtonEl = errorTemplate.querySelector('.error__button');
-const successButtonEl = successTemplate.querySelector('.success__button');
-
-const closeErrorPopup = () => {
-  errorTemplate.remove();
-};
-
-const closeSuccessPopup = () => {
-  successTemplate.remove();
-};
-
-errorButtonEl.addEventListener('click', closeErrorPopup);
-successButtonEl.addEventListener('click', closeSuccessPopup);
-
-const onSuccess = () => {
-  formEl.submit();
-  bodyEl.appendChild(successTemplate);
-};
-
-const onFail = () => {
-  bodyEl.appendChild(errorTemplate);
-};
 
 const pristine = new Pristine(formEl, {
   classTo: 'img-upload__field-wrapper',
@@ -58,6 +32,8 @@ const unblockSubmitButton = () => {
   formSubmitEl.disabled = false;
 };
 
+const onFormEscKeyDown = (evt) => onEscKeyDown(evt, closeUploadPopup);
+
 const onFormSubmit = (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
@@ -65,27 +41,16 @@ const onFormSubmit = (evt) => {
     const formData = new FormData(evt.target);
     sendData(formData)
       .then(() => {
-        onSuccess();//todo esc and no redirect
+        openSuccessPopup();
         closeUploadPopup();
       })
-      .catch(() => onFail())//todo esc
+      .catch(() => {
+        document.removeEventListener('keydown', onFormEscKeyDown);
+        openErrorPopup(onFormEscKeyDown);
+      })
       .finally(unblockSubmitButton);
   }
 };
-
-const onOuterBodyClick = (evt) => {
-  if (!evt.target.closest('.error__inner')) {
-    closeErrorPopup();
-  }
-};
-
-const onOuterBodyClick1 = (evt) => {
-  if (!evt.target.closest('.success__inner')) {
-    closeSuccessPopup();
-  }
-};
-
-const onFormEscKeyDown = (evt) => onEscKeyDown(evt, closeUploadPopup);
 
 const openUploadPopup = () => {
   overlayEl.classList.remove('hidden');
@@ -93,8 +58,6 @@ const openUploadPopup = () => {
   initScale();
   initEffects();
 
-  document.addEventListener('click', onOuterBodyClick); //todo
-  document.addEventListener('click', onOuterBodyClick1); //todo
   document.addEventListener('keydown', onFormEscKeyDown);
 };
 
@@ -122,8 +85,6 @@ function closeUploadPopup() {
   overlayEl.classList.add('hidden');
   bodyEl.classList.remove('modal-open');
 
-  document.removeEventListener('click', onOuterBodyClick);
-  document.removeEventListener('click', onOuterBodyClick1);
   document.removeEventListener('keydown', onFormEscKeyDown);
 }
 
