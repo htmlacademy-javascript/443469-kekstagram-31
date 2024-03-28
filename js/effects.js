@@ -32,6 +32,7 @@ const effectSettings = {
     max: 3,
     start: 3,
     step: 0.01,
+    units: 'px',
   },
   heat: {
     filter: 'brightness',
@@ -77,7 +78,7 @@ const onEffectButton = (evt) => {
 
   if (targetButton) {
     const effectValue = targetButton.value;
-    const settings = effectSettings[effectValue];
+    const {min, max, start, step, filter, units} = effectSettings[effectValue];
 
     if (effectValue === 'none') {
       resetToOrigin();
@@ -85,15 +86,15 @@ const onEffectButton = (evt) => {
       effectBarEl.classList.remove('hidden');
       sliderEl.noUiSlider.updateOptions({
         range: {
-          min: settings.min,
-          max: settings.max,
+          min: min,
+          max: max,
         },
-        start: settings.start,
-        step: settings.step,
+        start: start,
+        step: step,
         connect: 'lower',
       });
       sliderEl.noUiSlider.on('update', () => {
-        imagePreviewEl.style.filter = `${settings.filter}(${sliderValueEl.value}${effectValue === 'phobos' ? 'px' : ''})`;
+        imagePreviewEl.style.filter = `${filter}(${sliderValueEl.value}${units ?? ''})`;
       });
     }
   }

@@ -1,11 +1,10 @@
-import {NUMBER_OBJECTS} from './mocks/consts.js';
-import {generatePublishedPhotos} from './mocks/content.js';
+import {getData} from './api.js';
+import {showErrorMessage} from './util.js';
 import {createThumbnails} from './create-photos.js';
-import {onCheckFormValidation} from './form.js';
+import {addFormEventsValidation} from './form.js';
 
-const getPublishedPhotos = generatePublishedPhotos(NUMBER_OBJECTS);
+getData()
+  .then((photos) => createThumbnails(photos))
+  .catch((err) => showErrorMessage(err.message));
 
-createThumbnails(getPublishedPhotos);
-onCheckFormValidation();
-
-// console.log(getPublishedPhotos);
+addFormEventsValidation();
