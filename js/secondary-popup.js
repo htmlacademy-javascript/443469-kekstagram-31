@@ -9,7 +9,7 @@ const getPopupEl = (type) => {
   return popupElement;
 };
 
-const Popups = {
+const popups = {
   success: getPopupEl('success'),
   error: getPopupEl('error')
 };
@@ -29,12 +29,12 @@ const openPopup = (type) => {
   activePopupType = type;
   document.addEventListener('click', onOutsideTarget);
   document.addEventListener('keydown', onPopupEscKeydown);
-  document.body.append(Popups[activePopupType]);
+  document.body.append(popups[activePopupType]);
 };
 
 //function declaration to call it anywhere
 function closeActivePopup() {
-  Popups[activePopupType].remove();
+  popups[activePopupType].remove();
   activePopupType = null;
 
   document.removeEventListener('click', onOutsideTarget);
