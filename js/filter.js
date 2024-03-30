@@ -64,7 +64,7 @@ const handleMenuItemClick = (clickedFilterButton) => {
         thumbnailsData = photos.slice().sort((a, b) => b.comments.length - a.comments.length);
         break;
       default:
-        throw new Error('Unsupported type: ' + clickedFilterButton);
+        throw new Error(`Unsupported type: ${clickedFilterButton}`);
     }
 
     debounceRender(thumbnailsData, clickedFilterButton);
