@@ -1,7 +1,8 @@
-import {isEscapeKey, onEscKeyDown} from './util.js';
+import {isEscapeKey, onEscKeyDown, showErrorMessage} from './util.js';
 import {openSuccessPopup, openErrorPopup} from './secondary-popup.js';
 import {initScale} from './scale.js';
 import {initEffects} from './effects.js';
+import {checkFileTypes, initFileChooser} from './select-photo.js';
 import {sendData} from './api.js';
 
 const MAX_LENGTH_MESSAGE = 140;
@@ -15,10 +16,11 @@ const FormButtonText = {
 const ValidationMessages = {
   COMMENT: 'Длина комментария должна быть меньше 140 символов',
   HASHTAGS: 'Введён невалидный хэштег',
+  PHOTO: 'Неверный формат фото'
 };
 
 const bodyEl = document.querySelector('body');
-const uploadEl = document.querySelector('.img-upload__input');
+const uploadEl = document.querySelector('#upload-file');
 const overlayEl = document.querySelector('.img-upload__overlay');
 const closeBtnEl = document.querySelector('.img-upload__cancel');
 const formEl = document.querySelector('.img-upload__form');
@@ -58,12 +60,20 @@ const onFormSubmit = (evt) => {
 };
 
 const openUploadPopup = () => {
+  const file = uploadEl.files[0];
+
   overlayEl.classList.remove('hidden');
   bodyEl.classList.add('modal-open');
-  initScale();
-  initEffects();
 
-  document.addEventListener('keydown', onFormEscKeyDown);
+  if (checkFileTypes(file)) {
+    initFileChooser(file);
+    initScale();
+    initEffects();
+    document.addEventListener('keydown', onFormEscKeyDown);
+  } else {
+    closeUploadPopup();
+    showErrorMessage(ValidationMessages.PHOTO);
+  }
 };
 
 const validateHashtag = (hashtag) => /^#[a-zа-яё0-9]{1,19}$/i.test(hashtag);

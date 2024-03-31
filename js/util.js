@@ -10,11 +10,15 @@ const onEscKeyDown = (evt, callbackFunc) => {
   }
 };
 
-const showErrorMessage = () => {
+const showErrorMessage = (message) => {
   const errorTemplate = document.querySelector('#data-error').content;
   const errorEl = errorTemplate.cloneNode(true);
 
   document.body.append(errorEl);
+
+  if (message) {
+    document.querySelector('.data-error__title').textContent = message;
+  }
 
   const errorBarEl = document.querySelector('.data-error');
 

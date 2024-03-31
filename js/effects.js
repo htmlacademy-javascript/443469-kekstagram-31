@@ -78,11 +78,11 @@ const onEffectButton = (evt) => {
 
   if (targetButton) {
     const effectValue = targetButton.value;
-    const {min, max, start, step, filter, units} = effectSettings[effectValue];
-
     if (effectValue === 'none') {
       resetToOrigin();
     } else {
+      const {min, max, start, step, filter, units} = effectSettings[effectValue];
+
       effectBarEl.classList.remove('hidden');
       sliderEl.noUiSlider.updateOptions({
         range: {
