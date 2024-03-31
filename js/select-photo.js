@@ -1,7 +1,7 @@
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const previewEl = document.querySelector('.img-upload__preview img');
-const previewMiniature = document.querySelectorAll('.effects__preview');
+const previewMiniatures = document.querySelectorAll('.effects__preview');
 
 const checkFileTypes = (file) => {
   const fileName = file.name.toLowerCase();
@@ -10,7 +10,7 @@ const checkFileTypes = (file) => {
 
 const initFileChooser = (file) => {
   previewEl.src = URL.createObjectURL(file);
-  previewMiniature.forEach((preview) => {
+  previewMiniatures.forEach((preview) => {
     preview.style.backgroundImage = `url(${previewEl.src})`;
   });
 };
