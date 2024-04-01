@@ -19,7 +19,7 @@ const createPhotoThumb = ({url, description, likes, comments}) => {
 const createThumbnails = (thumbnails) => {
   thumbnails.forEach((photo) => {
     const imageThumbnail = createPhotoThumb(photo);
-    imageThumbnail.addEventListener('click', (evt)=> {
+    imageThumbnail.addEventListener('click', (evt) => {
       evt.preventDefault();
       openPopup(photo);
     });
