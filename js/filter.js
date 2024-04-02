@@ -47,7 +47,7 @@ const loadData = (data, clickedFilterButton) => {
 
 const debounceRender = debounce(loadData);
 
-const handleMenuItemClick = (clickedFilterButton) => {
+const onMenuItemClick = (clickedFilterButton) => {
   if (activeFilterButton !== clickedFilterButton) {
     activeFilterButton = clickedFilterButton;
 
@@ -77,11 +77,11 @@ const initThumbnails = (photosServer) => {
 
   filtersEl.addEventListener('click', onChangeFilter);
 
-  defaultFilterEl.addEventListener('click', () => handleMenuItemClick(MenuFilter.DEFAULT));
-  randomFilterEl.addEventListener('click', () => handleMenuItemClick(MenuFilter.RANDOM));
-  discussedFilterEl.addEventListener('click', () => handleMenuItemClick(MenuFilter.DISCUSSED));
+  defaultFilterEl.addEventListener('click', () => onMenuItemClick(MenuFilter.DEFAULT));
+  randomFilterEl.addEventListener('click', () => onMenuItemClick(MenuFilter.RANDOM));
+  discussedFilterEl.addEventListener('click', () => onMenuItemClick(MenuFilter.DISCUSSED));
 
-  handleMenuItemClick(MenuFilter.DEFAULT);
+  onMenuItemClick(MenuFilter.DEFAULT);
 };
 
 export {initThumbnails};
