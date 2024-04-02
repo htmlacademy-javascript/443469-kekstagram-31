@@ -62,8 +62,8 @@ const onFormSubmit = (evt) => {
 const openUploadPopup = () => {
   const file = uploadEl.files[0];
 
-  overlayEl.classList.remove('hidden');
   bodyEl.classList.add('modal-open');
+  overlayEl.classList.remove('hidden');
 
   if (checkFileTypes(file)) {
     initFileChooser(file);
