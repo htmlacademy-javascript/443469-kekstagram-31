@@ -26,6 +26,7 @@ closeBtnEl.addEventListener('click', (evt) => {
 const onPopupEscKeydown = (evt) => onEscKeyDown(evt, closePopup);
 
 const openPopup = (photo) => {
+  clearComments();
   fillPopup(photo);
 
   bodyEl.classList.add('modal-open');
@@ -45,7 +46,6 @@ function closePopup() {
   bodyEl.classList.remove('modal-open');
   popupEl.classList.add('hidden');
   commentLoaderEl.classList.remove('hidden');
-  clearComments();
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
